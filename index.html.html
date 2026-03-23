@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MSc Bioinformatics & Computational Biology — Bern · Fribourg</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #FAFAF8;
+  --fg: #1A1A1A;
+  --fg-dim: #6B6B6B;
+  --accent: #C8102E;
+  --accent-light: #FFF0F0;
+  --bern: #C8102E;
+  --fribourg: #2D6A4F;
+  --border: #E5E5E0;
+  --card: #FFFFFF;
+  --module-cs: #3B82F6;
+  --module-stat: #8B5CF6;
+  --module-gen: #059669;
+  --module-app: #D97706;
+  --module-prep: #EC4899;
+  --module-elec: #6B7280;
+  --radius: 10px;
+  --shadow: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+  --shadow-md: 0 4px 12px rgba(0,0,0,.08);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'DM Sans', -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  line-height: 1.65;
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---- NAV ---- */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(250,250,248,.88);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+}
+nav .inner {
+  max-width: 1200px; margin: auto;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 56px;
+}
+nav .logo {
+  font-weight: 700; font-size: 14px; letter-spacing: -.02em;
+  display: flex; align-items: center; gap: 8px;
+}
+nav .logo .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); display: inline-block; }
+nav .links { display: flex; gap: 6px; }
+nav .links a {
+  text-decoration: none; color: var(--fg-dim); font-size: 13px; font-weight: 500;
+  padding: 6px 12px; border-radius: 6px; transition: all .15s;
+}
+nav .links a:hover { background: var(--accent-light); color: var(--accent); }
+.hamburger { display: none; background: none; border: none; cursor: pointer; padding: 8px; }
+.hamburger svg { width: 22px; height: 22px; stroke: var(--fg); }
+
+/* ---- HERO ---- */
+.hero {
+  max-width: 1200px; margin: auto; padding: 5rem 2rem 3rem;
+}
+.hero .unis {
+  display: flex; gap: 12px; align-items: center; margin-bottom: 1.5rem;
+}
+.hero .uni-badge {
+  font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em;
+  padding: 4px 10px; border-radius: 20px;
+}
+.hero .uni-badge.bern { background: #C8102E15; color: var(--bern); }
+.hero .uni-badge.fribourg { background: #2D6A4F15; color: var(--fribourg); }
+.hero h1 {
+  font-size: clamp(2.2rem, 5vw, 3.5rem); font-weight: 700; line-height: 1.1;
+  letter-spacing: -.03em; max-width: 700px; margin-bottom: 1rem;
+}
+.hero h1 span { color: var(--accent); }
+.hero .subtitle {
+  font-size: 1.1rem; color: var(--fg-dim); max-width: 560px; line-height: 1.6;
+}
+.hero .stats {
+  display: flex; gap: 2.5rem; margin-top: 2.5rem; flex-wrap: wrap;
+}
+.hero .stat-item .num {
+  font-size: 2rem; font-weight: 700; letter-spacing: -.03em;
+  font-family: 'JetBrains Mono', monospace;
+}
+.hero .stat-item .label { font-size: 12px; color: var(--fg-dim); text-transform: uppercase; letter-spacing: .05em; margin-top: 2px; }
+
+/* ---- SECTIONS ---- */
+section { max-width: 1200px; margin: auto; padding: 3rem 2rem; }
+section.alt { background: #F5F5F0; max-width: 100%; }
+section.alt .wrap { max-width: 1200px; margin: auto; }
+.section-header {
+  display: flex; align-items: baseline; justify-content: space-between;
+  margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;
+}
+.section-header h2 {
+  font-size: 1.6rem; font-weight: 700; letter-spacing: -.02em;
+}
+.section-header .tag {
+  font-size: 11px; font-weight: 600; color: var(--fg-dim);
+  text-transform: uppercase; letter-spacing: .06em;
+  background: var(--border); padding: 3px 10px; border-radius: 12px;
+}
+
+/* ---- MODULE GRID ---- */
+.module-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 1rem;
+}
+.module-card {
+  background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 1.5rem; position: relative; overflow: hidden; transition: box-shadow .2s;
+}
+.module-card:hover { box-shadow: var(--shadow-md); }
+.module-card .stripe {
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+}
+.module-card h3 { font-size: 1rem; font-weight: 600; margin-bottom: .5rem; }
+.module-card .ects {
+  font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 500;
+  color: var(--fg-dim); margin-bottom: .75rem;
+}
+.module-card table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.module-card th { text-align: left; font-weight: 500; color: var(--fg-dim); padding: 4px 0; border-bottom: 1px solid var(--border); }
+.module-card td { padding: 5px 0; border-bottom: 1px solid #f0f0ec; }
+.module-card td:last-child { text-align: right; font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+.module-card .loc { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; padding: 1px 5px; border-radius: 3px; }
+.loc.be { background: #C8102E12; color: var(--bern); }
+.loc.fr { background: #2D6A4F12; color: var(--fribourg); }
+
+/* ---- SEMESTER TABS ---- */
+.tab-bar {
+  display: flex; gap: 4px; background: var(--border); padding: 3px; border-radius: 8px;
+  width: fit-content; margin-bottom: 1.5rem;
+}
+.tab-bar button {
+  background: none; border: none; padding: 8px 16px; border-radius: 6px;
+  font: inherit; font-size: 13px; font-weight: 500; cursor: pointer; color: var(--fg-dim);
+  transition: all .15s;
+}
+.tab-bar button.active { background: var(--card); color: var(--fg); box-shadow: var(--shadow); }
+.schedule-grid { display: none; }
+.schedule-grid.active { display: block; }
+
+.schedule-table {
+  width: 100%; border-collapse: collapse; font-size: 13px;
+  background: var(--card); border-radius: var(--radius); overflow: hidden;
+  border: 1px solid var(--border);
+}
+.schedule-table th {
+  background: #F5F5F0; text-align: left; padding: 10px 12px;
+  font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .04em;
+  color: var(--fg-dim); border-bottom: 1px solid var(--border);
+}
+.schedule-table td {
+  padding: 8px 12px; border-bottom: 1px solid #f5f5f0; vertical-align: top;
+}
+.schedule-table tr:hover td { background: #FAFAF8; }
+.schedule-table .course-name { font-weight: 500; }
+.schedule-table .weeks { color: var(--fg-dim); font-size: 12px; }
+.schedule-table .code { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--fg-dim); }
+
+/* ---- FAQ ---- */
+.faq-list { max-width: 700px; }
+.faq-item { border-bottom: 1px solid var(--border); }
+.faq-q {
+  padding: 1rem 0; cursor: pointer; display: flex; justify-content: space-between;
+  align-items: center; font-weight: 500; font-size: 15px; user-select: none;
+}
+.faq-q::after { content: '+'; font-size: 1.2rem; color: var(--fg-dim); transition: transform .2s; }
+.faq-item.open .faq-q::after { content: '−'; }
+.faq-a {
+  max-height: 0; overflow: hidden; transition: max-height .3s ease;
+  color: var(--fg-dim); font-size: 14px; line-height: 1.7;
+}
+.faq-item.open .faq-a { max-height: 600px; }
+.faq-a-inner { padding-bottom: 1rem; }
+
+/* ---- LINKS ---- */
+.links-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem;
+}
+.link-card {
+  background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 1.25rem; text-decoration: none; color: inherit; transition: all .15s;
+  display: block;
+}
+.link-card:hover { border-color: var(--accent); box-shadow: var(--shadow-md); }
+.link-card h4 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+.link-card p { font-size: 12px; color: var(--fg-dim); }
+.link-card .arrow { color: var(--accent); font-size: 18px; margin-top: 8px; display: block; }
+
+/* ---- CONTACT ---- */
+.contact-box {
+  background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 2rem; display: inline-block;
+}
+.contact-box h3 { font-size: 1rem; margin-bottom: .5rem; }
+.contact-box .detail { font-size: 14px; color: var(--fg-dim); line-height: 1.8; }
+.contact-box a { color: var(--accent); text-decoration: none; }
+.contact-box a:hover { text-decoration: underline; }
+
+/* ---- FOOTER ---- */
+footer {
+  border-top: 1px solid var(--border); padding: 2rem;
+  text-align: center; font-size: 12px; color: var(--fg-dim);
+}
+
+/* ---- CHATBOT PLACEHOLDER ---- */
+.chatbot-fab {
+  position: fixed; bottom: 24px; right: 24px; z-index: 200;
+  width: 56px; height: 56px; border-radius: 50%; border: none;
+  background: var(--accent); color: #fff; cursor: pointer;
+  box-shadow: 0 4px 16px rgba(200,16,46,.35);
+  display: flex; align-items: center; justify-content: center;
+  transition: transform .2s;
+}
+.chatbot-fab:hover { transform: scale(1.08); }
+.chatbot-fab svg { width: 24px; height: 24px; }
+.chatbot-panel {
+  position: fixed; bottom: 92px; right: 24px; z-index: 200;
+  width: 360px; max-height: 480px; background: var(--card);
+  border: 1px solid var(--border); border-radius: 16px;
+  box-shadow: 0 12px 40px rgba(0,0,0,.12);
+  display: none; flex-direction: column; overflow: hidden;
+}
+.chatbot-panel.open { display: flex; }
+.chatbot-header {
+  padding: 16px 20px; border-bottom: 1px solid var(--border);
+  font-weight: 600; font-size: 14px; display: flex; justify-content: space-between; align-items: center;
+}
+.chatbot-header button { background: none; border: none; cursor: pointer; font-size: 18px; color: var(--fg-dim); }
+.chatbot-body {
+  flex: 1; padding: 20px; overflow-y: auto; font-size: 14px; color: var(--fg-dim); line-height: 1.6;
+}
+.chatbot-body .bot-msg {
+  background: #f5f5f0; padding: 10px 14px; border-radius: 12px 12px 12px 4px;
+  margin-bottom: 8px; max-width: 85%;
+}
+.chatbot-input-area {
+  padding: 12px 16px; border-top: 1px solid var(--border);
+  display: flex; gap: 8px;
+}
+.chatbot-input-area input {
+  flex: 1; border: 1px solid var(--border); border-radius: 8px;
+  padding: 8px 12px; font: inherit; font-size: 13px; outline: none;
+}
+.chatbot-input-area input:focus { border-color: var(--accent); }
+.chatbot-input-area button {
+  background: var(--accent); color: #fff; border: none; border-radius: 8px;
+  padding: 8px 14px; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer;
+}
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 768px) {
+  nav .links { display: none; position: absolute; top: 56px; left: 0; right: 0; background: var(--bg); border-bottom: 1px solid var(--border); flex-direction: column; padding: 1rem; }
+  nav .links.open { display: flex; }
+  .hamburger { display: block; }
+  .hero h1 { font-size: 2rem; }
+  .hero .stats { gap: 1.5rem; }
+  .module-grid { grid-template-columns: 1fr; }
+  .chatbot-panel { width: calc(100% - 32px); right: 16px; }
+  .schedule-table { font-size: 12px; }
+  .schedule-table th, .schedule-table td { padding: 6px 8px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="inner">
+    <div class="logo"><span class="dot"></span> MSc Bioinformatics</div>
+    <div class="links" id="navLinks">
+      <a href="#programme">Programme</a>
+      <a href="#curriculum">Curriculum</a>
+      <a href="#schedule">Schedule</a>
+      <a href="#faq">FAQ</a>
+      <a href="#links">Resources</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <button class="hamburger" onclick="document.getElementById('navLinks').classList.toggle('open')">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero" id="programme">
+  <div class="unis">
+    <span class="uni-badge bern">Universit&auml;t Bern</span>
+    <span class="uni-badge fribourg">Universit&eacute; de Fribourg</span>
+  </div>
+  <h1>Master in <span>Bioinformatics</span> &amp; Computational Biology</h1>
+  <p class="subtitle">A joint MSc programme training the next generation of computational life scientists. Learn to analyse large biological data sets, model biological processes, and work at the intersection of biology and computer science.</p>
+  <div class="stats">
+    <div class="stat-item"><div class="num">120</div><div class="label">ECTS Credits</div></div>
+    <div class="stat-item"><div class="num">4</div><div class="label">Semesters</div></div>
+    <div class="stat-item"><div class="num">6</div><div class="label">Modules</div></div>
+    <div class="stat-item"><div class="num">30</div><div class="label">ECTS Thesis</div></div>
+  </div>
+</header>
+
+<!-- CURRICULUM -->
+<section class="alt" id="curriculum">
+  <div class="wrap">
+    <div class="section-header">
+      <h2>Curriculum Overview</h2>
+      <span class="tag">82.5 ECTS Compulsory + 6 Preparatory + 1.5 Elective + 30 Thesis</span>
+    </div>
+
+    <div class="module-grid">
+
+      <!-- Preparatory CS (Module A) -->
+      <div class="module-card">
+        <div class="stripe" style="background: var(--module-prep)"></div>
+        <h3>Preparatory: Computer Science (Module A)</h3>
+        <p class="ects">6 ECTS &middot; 1st Semester &middot; For biology/biochemistry backgrounds</p>
+        <table>
+          <tr><th>Course</th><th>ECTS</th></tr>
+          <tr><td>Mathematical Concepts for Bioinformatics <span class="loc fr">FR</span></td><td>1</td></tr>
+          <tr><td>Basic Programming for Non-Informaticians <span class="loc be">BE</span></td><td>5</td></tr>
+        </table>
+      </div>
+
+      <!-- Preparatory Biology (Module B) -->
+      <div class="module-card">
+        <div class="stripe" style="background: var(--module-prep)"></div>
+        <h3>Preparatory: Biology (Module B)</h3>
+        <p class="ects">6 ECTS &middot; 1st Semester &middot; For math/CS/physics backgrounds</p>
+        <table>
+          <tr><th>Course</th><th>ECTS</th></tr>
+          <tr><td>Mol. Biology &amp; Genetics for Non-Biologists (lecture) <span class="loc fr">FR</span></td><td>3</td></tr>
+          <tr><td>Mol. Biology &amp; Genetics for Non-Biologists (practical) <span class="loc fr">FR</span></td><td>3</td></tr>
+        </table>
+      </div>
+
+      <!-- Computer Science -->
+      <div class="module-card">
+        <div class="stripe" style="background: var(--module-cs)"></div>
+        <h3>Module: Computer Science</h3>
+        <p class="ects">23.5 ECTS &middot; Semesters 1–4</p>
+        <table>
+          <tr><th>Course</th><th>ECTS</th></tr>
+          <tr><td>Introduction to UNIX and BASH <span class="loc fr">FR</span> <span class="weeks">S1</span></td><td>2.5</td></tr>
+          <tr><td>Introduction to R <span class="loc fr">FR</span> <span class="weeks">S1</span></td><td>2</td></tr>
+          <tr><td>Programming with R <span class="loc fr">FR</span> <span class="weeks">S1</span></td><td>1</td></tr>
+          <tr><td>Digital Sustainability <span class="loc be">BE</span> <span class="weeks">S1</span></td><td>1</td></tr>
+          <tr><td>HPC &amp; Cloud Computing <span class="loc be">BE</span> <span class="weeks">S1</span></td><td>1</td></tr>
+          <tr><td>Intro to Data Science with Python <span class="loc be">BE</span> <span class="weeks">S2</span></td><td>5</td></tr>
+          <tr><td>Introduction to Image Analysis <span class="loc be">BE</span> <span class="weeks">S2</span></td><td>3</td></tr>
+          <tr><td>Bioinformatics Algorithms <span class="loc be">BE</span> <span class="weeks">S3</span></td><td>3</td></tr>
+          <tr><td>Introduction to Artificial Intelligence <span class="loc be">BE</span> <span class="weeks">S3</span></td><td>5</td></tr>
+        </table>
+      </div>
+
+      <!-- Statistics -->
+      <div class="module-card">
+        <div class="stripe" style="background: var(--module-stat)"></div>
+        <h3>Module: Statistics</h3>
+        <p class="ects">21 ECTS &middot; Semesters 1–4</p>
+        <table>
+          <tr><th>Course</th><th>ECTS</th></tr>
+          <tr><td>Applied Biostatistics I (lecture + exercises) <span class="loc be">BE</span> <span class="weeks">S1</span></td><td>4</td></tr>
+          <tr><td>Applied Biostatistics II (lecture + exercises) <span class="loc be">BE</span> <span class="weeks">S2</span></td><td>4</td></tr>
+          <tr><td>Machine Learning <span class="loc fr">FR</span> <span class="weeks">S2</span></td><td>5</td></tr>
+          <tr><td>Stochastic Models in Bioinformatics <span class="loc fr">FR</span> <span class="weeks">S3</span></td><td>3</td></tr>
+          <tr><td>Deep Learning <span class="loc be">BE</span> <span class="weeks">S4</span></td><td>5</td></tr>
+        </table>
+      </div>
+
+      <!-- Genomics -->
+      <div class="module-card">
+        <div class="stripe" style="background: var(--module-gen)"></div>
+        <h3>Module: Genomics</h3>
+        <p class="ects">19.5 ECTS &middot; Semesters 1–3</p>
+        <table>
+          <tr><th>Course</th><th>ECTS</th></tr>
+          <tr><td>Bioinformatics (in silico practical) <span class="loc fr">FR</span> <span class="weeks">S1</span></td><td>3</td></tr>
+          <tr><td>RNA-Sequencing <span class="loc be">BE</span> <span class="weeks">S1</span></td><td>3</td></tr>
+          <tr><td>Cancer Genomics <span class="loc be">BE</span> <span class="weeks">S3</span></td><td>3</td></tr>
+          <tr><td>Evolutionary Genomics <span class="loc fr">FR</span> <span class="weeks">S2</span></td><td>3</td></tr>
+          <tr><td>Genome &amp; Transcriptome Assembly <span class="loc be">BE</span> <span class="weeks">S3</span></td><td>2</td></tr>
+          <tr><td>Org. &amp; Annotation of Eukaryote Genomes <span class="loc fr">FR</span> <span class="weeks">S3</span></td><td>3</td></tr>
+          <tr><td>Genomics of Microorganisms <span class="loc be">BE</span> <span class="weeks">S2</span></td><td>1.5</td></tr>
+          <tr><td>Metagenomics Data Analysis <span class="loc fr">FR</span> <span class="weeks">S2</span></td><td>1</td></tr>
+        </table>
+      </div>
+
+      <!-- Bioinformatic Applications -->
+      <div class="module-card">
+        <div class="stripe" style="background: var(--module-app)"></div>
+        <h3>Module: Bioinformatic Applications</h3>
+        <p class="ects">18.5 ECTS &middot; Semesters 2–3</p>
+        <table>
+          <tr><th>Course</th><th>ECTS</th></tr>
+          <tr><td>Proteomics &amp; Metabolomics <span class="loc be">BE</span> <span class="weeks">S2</span></td><td>5</td></tr>
+          <tr><td>Classical Models in Biology (lecture) <span class="loc fr">FR</span> <span class="weeks">S2</span></td><td>3</td></tr>
+          <tr><td>Classical Models in Biology (exercises) <span class="loc fr">FR</span> <span class="weeks">S2</span></td><td>1</td></tr>
+          <tr><td>Systems Biology <span class="loc be">BE</span> <span class="weeks">S3</span></td><td>3</td></tr>
+          <tr><td>Precision Medicine <span class="loc be">BE</span> <span class="weeks">S2</span></td><td>3</td></tr>
+          <tr><td>Research Seminar in Bioinformatics <span class="loc be">BE</span><span class="loc fr">FR</span> <span class="weeks">S3</span></td><td>2</td></tr>
+          <tr><td>Computational Epidemiology <span class="loc be">BE</span> <span class="weeks">S3</span></td><td>1.5</td></tr>
+        </table>
+      </div>
+
+      <!-- Elective Courses -->
+      <div class="module-card">
+        <div class="stripe" style="background: var(--module-elec)"></div>
+        <h3>Module: Elective Courses</h3>
+        <p class="ects">min. 1.5 ECTS &middot; Approval from study advisor required</p>
+        <table>
+          <tr><th>Course (suggestions)</th><th>ECTS</th></tr>
+          <tr><td>Research Project <span class="loc be">BE</span></td><td>7.5</td></tr>
+          <tr><td>Pattern Recognition <span class="loc fr">FR</span></td><td>5</td></tr>
+          <tr><td>Programmierung 1 <span class="loc be">BE</span></td><td>5</td></tr>
+          <tr><td>Beyond Genetic Inheritance <span class="loc be">BE</span></td><td>3</td></tr>
+          <tr><td>Mol. Genetics of Model Organism Dev. <span class="loc fr">FR</span></td><td>3</td></tr>
+          <tr><td>Theoretical Ecology &amp; Evolution <span class="loc be">BE</span></td><td>2</td></tr>
+          <tr><td>Protein Bioinformatics BioPython <span class="loc be">BE</span></td><td>1.5</td></tr>
+          <tr><td>Protein Structure &amp; Homology Modelling <span class="loc fr">FR</span></td><td>1.5</td></tr>
+          <tr><td>Docking &amp; Molecular Graphics <span class="loc fr">FR</span></td><td>1.5</td></tr>
+        </table>
+      </div>
+
+      <!-- Master Thesis -->
+      <div class="module-card">
+        <div class="stripe" style="background: var(--accent)"></div>
+        <h3>Master Thesis</h3>
+        <p class="ects">30 ECTS &middot; 4th Semester &middot; 6 months full-time</p>
+        <table>
+          <tr><td colspan="2" style="color: var(--fg-dim); font-size: 13px; line-height: 1.6; padding: 8px 0;">
+            Independent research project under supervision. Includes written thesis and oral presentation. 
+            Can begin in the 3rd semester and extends over the entire 4th semester. 
+            Adequate supervision from both biology and CS/mathematics side required.
+          </td></tr>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SCHEDULE -->
+<section id="schedule">
+  <div class="section-header">
+    <h2>Course Schedule by Semester</h2>
+  </div>
+
+  <div class="tab-bar">
+    <button class="active" onclick="showSem(0, this)">1st Sem (HS)</button>
+    <button onclick="showSem(1, this)">2nd Sem (FS)</button>
+    <button onclick="showSem(2, this)">3rd Sem (HS)</button>
+    <button onclick="showSem(3, this)">4th Sem (FS)</button>
+  </div>
+
+  <!-- Semester 1 -->
+  <div class="schedule-grid active" id="sem0">
+    <p style="font-size:13px; color:var(--fg-dim); margin-bottom:1rem;">Fall Semester (HS) &middot; Calendar weeks 38–51 &middot; Semester weeks 1–14</p>
+    <table class="schedule-table">
+      <tr><th>Course</th><th>Code</th><th>Location</th><th>Weeks (SW)</th><th>ECTS</th></tr>
+      <tr><td class="course-name">Introduction to UNIX and BASH</td><td class="code">SBC.07110</td><td><span class="loc fr">FR</span></td><td class="weeks">1–2</td><td>2.5</td></tr>
+      <tr><td class="course-name">HPC &amp; Cloud Computing</td><td class="code">467647</td><td><span class="loc be">BE</span></td><td class="weeks">3</td><td>1</td></tr>
+      <tr><td class="course-name">Digital Sustainability</td><td class="code">466951</td><td><span class="loc be">BE</span></td><td class="weeks">4</td><td>1</td></tr>
+      <tr><td class="course-name">Introduction to R</td><td class="code">SBL.30001</td><td><span class="loc fr">FR</span></td><td class="weeks">5–6</td><td>2</td></tr>
+      <tr><td class="course-name">Programming with R</td><td class="code">SBC.07109</td><td><span class="loc fr">FR</span></td><td class="weeks">7</td><td>1</td></tr>
+      <tr><td class="course-name">Mathematical Concepts for Bioinformatics &#x1D400;</td><td class="code">SBL.30007</td><td><span class="loc fr">FR</span></td><td class="weeks">7–10</td><td>1</td></tr>
+      <tr><td class="course-name">Bioinformatics (in silico practical)</td><td class="code">SBC.07107</td><td><span class="loc fr">FR</span></td><td class="weeks">8–10</td><td>3</td></tr>
+      <tr><td class="course-name">Mol. Biology (lecture) &#x1D401;</td><td class="code">SBL.30005</td><td><span class="loc fr">FR</span></td><td class="weeks">4–10</td><td>3</td></tr>
+      <tr><td class="course-name">Mol. Biology (practical) &#x1D401;</td><td class="code">SBL.30006</td><td><span class="loc fr">FR</span></td><td class="weeks">11–14</td><td>3</td></tr>
+      <tr><td class="course-name">RNA-Sequencing</td><td class="code">467713</td><td><span class="loc be">BE</span></td><td class="weeks">5–14</td><td>3</td></tr>
+      <tr><td class="course-name">Applied Biostatistics I</td><td class="code">104207</td><td><span class="loc be">BE</span></td><td class="weeks">1–14</td><td>4</td></tr>
+      <tr><td class="course-name">Basic Programming for Non-Informaticians &#x1D400;</td><td class="code">104189</td><td><span class="loc be">BE</span></td><td class="weeks">1–14</td><td>5</td></tr>
+    </table>
+    <p style="font-size:12px; color:var(--fg-dim); margin-top:.5rem;">&#x1D400; = Module A only (biology backgrounds) &middot; &#x1D401; = Module B only (CS/math backgrounds)</p>
+  </div>
+
+  <!-- Semester 2 -->
+  <div class="schedule-grid" id="sem1">
+    <p style="font-size:13px; color:var(--fg-dim); margin-bottom:1rem;">Spring Semester (FS) &middot; Calendar weeks 8–22 &middot; Semester weeks 1–14</p>
+    <table class="schedule-table">
+      <tr><th>Course</th><th>Code</th><th>Location</th><th>Weeks (SW)</th><th>ECTS</th></tr>
+      <tr><td class="course-name">Machine Learning</td><td class="code">UE-SBL.30002</td><td><span class="loc fr">FR</span></td><td class="weeks">1–7</td><td>5</td></tr>
+      <tr><td class="course-name">Proteomics &amp; Metabolomics</td><td class="code">470248</td><td><span class="loc be">BE</span></td><td class="weeks">1–12</td><td>5</td></tr>
+      <tr><td class="course-name">Intro to Data Science with Python</td><td class="code">473540</td><td><span class="loc be">BE</span></td><td class="weeks">1–14</td><td>5</td></tr>
+      <tr><td class="course-name">Applied Biostatistics II</td><td class="code">104224</td><td><span class="loc be">BE</span></td><td class="weeks">1–14</td><td>4</td></tr>
+      <tr><td class="course-name">Introduction to Image Analysis</td><td class="code">102191</td><td><span class="loc be">BE</span></td><td class="weeks">1–14</td><td>3</td></tr>
+      <tr><td class="course-name">Evolutionary Genomics</td><td class="code">UE-SBL.20034</td><td><span class="loc fr">FR</span></td><td class="weeks">11–14</td><td>3</td></tr>
+      <tr><td class="course-name">Classical Models in Biology</td><td class="code">UE-SBL.06002/03</td><td><span class="loc fr">FR</span></td><td class="weeks">various</td><td>3+1</td></tr>
+      <tr><td class="course-name">Precision Medicine</td><td class="code">473286</td><td><span class="loc be">BE</span></td><td class="weeks">1–14</td><td>3</td></tr>
+      <tr><td class="course-name">Genomics of Microorganisms</td><td class="code">405520</td><td><span class="loc be">BE</span></td><td class="weeks">7–14</td><td>1.5</td></tr>
+      <tr><td class="course-name">Metagenomics Data Analysis</td><td class="code">UE-SBL.00425</td><td><span class="loc fr">FR</span></td><td class="weeks">3–7</td><td>1</td></tr>
+    </table>
+  </div>
+
+  <!-- Semester 3 -->
+  <div class="schedule-grid" id="sem2">
+    <p style="font-size:13px; color:var(--fg-dim); margin-bottom:1rem;">Fall Semester (HS) &middot; Calendar weeks 38–51 &middot; Semester weeks 1–14</p>
+    <table class="schedule-table">
+      <tr><th>Course</th><th>Code</th><th>Location</th><th>Weeks (SW)</th><th>ECTS</th></tr>
+      <tr><td class="course-name">Bioinformatics Algorithms</td><td class="code">410495</td><td><span class="loc be">BE</span></td><td class="weeks">1–14</td><td>3</td></tr>
+      <tr><td class="course-name">Introduction to Artificial Intelligence</td><td class="code">472720</td><td><span class="loc be">BE</span></td><td class="weeks">1–14</td><td>5</td></tr>
+      <tr><td class="course-name">Systems Biology</td><td class="code">473205</td><td><span class="loc be">BE</span></td><td class="weeks">1–14</td><td>3</td></tr>
+      <tr><td class="course-name">Genome &amp; Transcriptome Assembly</td><td class="code">473637</td><td><span class="loc be">BE</span></td><td class="weeks">1–4</td><td>2</td></tr>
+      <tr><td class="course-name">Org. &amp; Annotation of Eukaryote Genomes</td><td class="code">SBL.30004</td><td><span class="loc fr">FR</span></td><td class="weeks">5–10</td><td>3</td></tr>
+      <tr><td class="course-name">Cancer Genomics</td><td class="code">407009</td><td><span class="loc be">BE</span></td><td class="weeks">1–14</td><td>3</td></tr>
+      <tr><td class="course-name">Stochastic Models in Bioinformatics</td><td class="code">UE-SMA.07010</td><td><span class="loc fr">FR</span></td><td class="weeks">1–14</td><td>3</td></tr>
+      <tr><td class="course-name">Research Seminar in Bioinformatics</td><td class="code">473642</td><td><span class="loc be">BE</span> / <span class="loc fr">FR</span></td><td class="weeks">1–7 BE / 8–14 FR</td><td>2</td></tr>
+      <tr><td class="course-name">Computational Epidemiology</td><td class="code">467294</td><td><span class="loc be">BE</span></td><td class="weeks">11–14</td><td>1.5</td></tr>
+      <tr><td class="course-name">Research Project (elective)</td><td class="code">473636</td><td><span class="loc be">BE</span> / <span class="loc fr">FR</span></td><td class="weeks">ongoing</td><td>7.5</td></tr>
+    </table>
+  </div>
+
+  <!-- Semester 4 -->
+  <div class="schedule-grid" id="sem3">
+    <p style="font-size:13px; color:var(--fg-dim); margin-bottom:1rem;">Spring Semester (FS) &middot; Primarily thesis work</p>
+    <table class="schedule-table">
+      <tr><th>Course</th><th>Code</th><th>Location</th><th>Weeks (SW)</th><th>ECTS</th></tr>
+      <tr><td class="course-name">Deep Learning (lecture + tutorials)</td><td class="code">422828</td><td><span class="loc be">BE</span></td><td class="weeks">1–14</td><td>5</td></tr>
+      <tr><td class="course-name">Master Thesis</td><td class="code">SBC.07500</td><td><span class="loc be">BE</span> / <span class="loc fr">FR</span></td><td class="weeks">full semester</td><td>30</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="alt" id="faq">
+  <div class="wrap">
+    <div class="section-header">
+      <h2>Frequently Asked Questions</h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">When does the programme start?</div>
+        <div class="faq-a"><div class="faq-a-inner">The MSc programme starts every year in the fall semester (Herbstsemester). The Welcome Event takes place on the first day of the semester at the University of Fribourg (PER21, Salle 230).</div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">What are Module A and Module B?</div>
+        <div class="faq-a"><div class="faq-a-inner">These preparatory modules ensure all students have a common foundation. If you come from a biology/biochemistry background, you take <strong>Module A</strong> (programming &amp; math basics). If you come from a math/CS/physics background, you take <strong>Module B</strong> (molecular biology basics). Both are 6 ECTS and taken in the first semester.</div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">How do I register for courses at the other university?</div>
+        <div class="faq-a"><div class="faq-a-inner">You must register for the <strong>BeNeFri</strong> programme at your home university every semester. This gives you access to courses at the partner university. Important: the registration must be renewed each semester and late registrations are not accepted. Register for courses via KSL (Bern) and MyUniFR (Fribourg).</div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">In which language are courses taught?</div>
+        <div class="faq-a"><div class="faq-a-inner">All courses are taught in English. Exams, written work, and the Master thesis must also be in English.</div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Can I repeat a failed exam?</div>
+        <div class="faq-a"><div class="faq-a-inner">Yes, failed exams can be repeated once, typically in the following semester. The examiner may replace a written exam with an oral exam (15–60 min). Within a module, one insufficient grade can be compensated if the overall module average is sufficient &mdash; except for Module A and Module B courses, and the Master thesis, which cannot be compensated.</div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">When can I start the Master thesis?</div>
+        <div class="faq-a"><div class="faq-a-inner">The thesis can begin in the 3rd semester and runs throughout the 4th semester. It is designed for 6 months of full-time work (30 ECTS). An extension of up to 6 additional months is possible with justification. All prerequisites and "Auflagen" must be fulfilled before starting.</div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">How do elective courses work?</div>
+        <div class="faq-a"><div class="faq-a-inner">You need at least 1.5 ECTS in elective courses. Electives should complement your background (i.e., come from a field different from your BSc). The choice must be approved by the study advisor. You can take courses from the suggested list or propose others.</div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Can external credits be recognized?</div>
+        <div class="faq-a"><div class="faq-a-inner">Yes, up to 10 ECTS of credits from other universities can be recognized upon request to the study advisor. The Master thesis cannot be completed externally.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LINKS -->
+<section id="links">
+  <div class="section-header">
+    <h2>Important Links &amp; Resources</h2>
+  </div>
+  <div class="links-grid">
+    <a class="link-card" href="https://ksl.unibe.ch" target="_blank" rel="noopener">
+      <h4>KSL Bern</h4>
+      <p>Course catalogue &amp; exam registration (Universit&auml;t Bern)</p>
+      <span class="arrow">&rarr;</span>
+    </a>
+    <a class="link-card" href="https://my.unifr.ch" target="_blank" rel="noopener">
+      <h4>MyUniFR</h4>
+      <p>Course &amp; exam registration (Universit&eacute; de Fribourg)</p>
+      <span class="arrow">&rarr;</span>
+    </a>
+    <a class="link-card" href="https://www.ilias.unibe.ch" target="_blank" rel="noopener">
+      <h4>ILIAS Bern</h4>
+      <p>Course materials &amp; learning platform</p>
+      <span class="arrow">&rarr;</span>
+    </a>
+    <a class="link-card" href="https://www3.unifr.ch/timetable" target="_blank" rel="noopener">
+      <h4>Timetable Fribourg</h4>
+      <p>Lecture timetables at Universit&eacute; de Fribourg</p>
+      <span class="arrow">&rarr;</span>
+    </a>
+    <a class="link-card" href="https://www.bioinformatics.unibe.ch" target="_blank" rel="noopener">
+      <h4>IBU Website</h4>
+      <p>Interfaculty Bioinformatics Unit, Bern</p>
+      <span class="arrow">&rarr;</span>
+    </a>
+    <a class="link-card" href="https://www.unifr.ch/scimed/en/plans" target="_blank" rel="noopener">
+      <h4>Fribourg Study Plans</h4>
+      <p>Faculty of Science &amp; Medicine curriculum documents</p>
+      <span class="arrow">&rarr;</span>
+    </a>
+    <a class="link-card" href="https://www.unifr.ch/scimed/en/integrity" target="_blank" rel="noopener">
+      <h4>Scientific Integrity</h4>
+      <p>Compulsory courses on research ethics (Fribourg)</p>
+      <span class="arrow">&rarr;</span>
+    </a>
+    <a class="link-card" href="#" onclick="event.preventDefault();">
+      <h4>BeNeFri Registration</h4>
+      <p>Register for cross-university access each semester</p>
+      <span class="arrow">&rarr;</span>
+    </a>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="alt" id="contact">
+  <div class="wrap">
+    <div class="section-header">
+      <h2>Contact</h2>
+    </div>
+    <div class="contact-box">
+      <h3>Stefan Daniel, Study Coordinator</h3>
+      <div class="detail">
+        Interfaculty Bioinformatics Unit (IBU)<br>
+        Universit&auml;t Bern<br><br>
+        <a href="mailto:stefan.daniel@unibe.ch">stefan.daniel@unibe.ch</a><br>
+        +41 31 684 45 29<br><br>
+        Office days: Tuesday &amp; Wednesday
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>MSc Bioinformatics &amp; Computational Biology &middot; A joint programme of Universit&auml;t Bern &amp; Universit&eacute; de Fribourg</p>
+  <p style="margin-top:4px;">Academic year 2025/26 &middot; Last updated March 2026</p>
+</footer>
+
+<!-- CHATBOT -->
+<button class="chatbot-fab" onclick="toggleChat()" title="Ask a question">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+  </svg>
+</button>
+<div class="chatbot-panel" id="chatPanel">
+  <div class="chatbot-header">
+    <span>Ask about the programme</span>
+    <button onclick="toggleChat()">&times;</button>
+  </div>
+  <div class="chatbot-body" id="chatBody">
+    <div class="bot-msg">Hi! I answer questions about the MSc in Bioinformatics &amp; Computational Biology based on the official programme documents. Every answer includes source references so you can verify the information.</div>
+  </div>
+  <div class="chatbot-input-area">
+    <input type="text" id="chatInput" placeholder="Type your question..." onkeydown="if(event.key==='Enter')sendMessage()">
+    <button onclick="sendMessage()" id="chatSendBtn">Send</button>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// CONFIGURATION — Netlify Function (no URL change needed!)
+// The function runs on the same domain as the website.
+// ============================================================
+const WORKER_URL = '/.netlify/functions/chat';
+
+// Conversation history (kept in memory for context)
+let chatHistory = [];
+
+// Semester tabs
+function showSem(idx, btn) {
+  document.querySelectorAll('.schedule-grid').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-bar button').forEach(b => b.classList.remove('active'));
+  document.getElementById('sem' + idx).classList.add('active');
+  btn.classList.add('active');
+}
+
+// Chatbot toggle
+function toggleChat() {
+  document.getElementById('chatPanel').classList.toggle('open');
+  if (document.getElementById('chatPanel').classList.contains('open')) {
+    document.getElementById('chatInput').focus();
+  }
+}
+
+// Helper: add a message bubble to the chat
+function addMessage(text, isUser) {
+  const body = document.getElementById('chatBody');
+  if (isUser) {
+    const div = document.createElement('div');
+    div.style.cssText = 'text-align:right; margin-bottom:8px;';
+    div.innerHTML = '<span style="background:var(--accent);color:#fff;padding:8px 14px;border-radius:12px 12px 4px 12px;display:inline-block;max-width:85%;font-size:14px;text-align:left;">' + escapeHtml(text) + '</span>';
+    body.appendChild(div);
+  } else {
+    const div = document.createElement('div');
+    div.className = 'bot-msg';
+    div.innerHTML = formatResponse(text);
+    body.appendChild(div);
+  }
+  body.scrollTop = body.scrollHeight;
+}
+
+// Helper: show typing indicator
+function showTyping() {
+  const body = document.getElementById('chatBody');
+  const div = document.createElement('div');
+  div.className = 'bot-msg';
+  div.id = 'typing-indicator';
+  div.innerHTML = '<span style="opacity:0.5;">Thinking...</span>';
+  body.appendChild(div);
+  body.scrollTop = body.scrollHeight;
+}
+function removeTyping() {
+  const el = document.getElementById('typing-indicator');
+  if (el) el.remove();
+}
+
+// Helper: escape HTML
+function escapeHtml(text) {
+  const d = document.createElement('div');
+  d.textContent = text;
+  return d.innerHTML;
+}
+
+// Helper: format bot response with clickable source links
+function formatResponse(text) {
+  let html = escapeHtml(text)
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\[Source (\d+)\]/g, '<span style="background:#e8e8e4;padding:1px 5px;border-radius:3px;font-size:11px;font-weight:600;color:var(--fg-dim);">Source $1</span>')
+    .replace(/📎/g, '📎')
+    .replace(/\n/g, '<br>');
+  
+  // Make URLs clickable
+  html = html.replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener" style="color:var(--accent);font-size:12px;">$1</a>');
+  
+  return html;
+}
+
+// Send message to Netlify Function (RAG)
+async function sendMessage() {
+  const input = document.getElementById('chatInput');
+  const sendBtn = document.getElementById('chatSendBtn');
+  const message = input.value.trim();
+  if (!message) return;
+
+  // Show user message
+  addMessage(message, true);
+  input.value = '';
+  input.disabled = true;
+  sendBtn.disabled = true;
+
+  // Show typing indicator
+  showTyping();
+
+  try {
+    // Check if Worker URL is configured
+    if (!WORKER_URL) {
+      removeTyping();
+      addMessage('The chatbot is not yet connected. Please check the deployment.', false);
+      input.disabled = false;
+      sendBtn.disabled = false;
+      input.focus();
+      return;
+    }
+
+    const response = await fetch(WORKER_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: message,
+        history: chatHistory
+      })
+    });
+
+    const data = await response.json();
+    removeTyping();
+
+    // Add to history for context (store clean text, not augmented)
+    chatHistory.push({ role: 'user', content: message });
+    chatHistory.push({ role: 'assistant', content: data.reply });
+
+    // Keep history manageable
+    if (chatHistory.length > 12) {
+      chatHistory = chatHistory.slice(-12);
+    }
+
+    addMessage(data.reply, false);
+  } catch (error) {
+    removeTyping();
+    addMessage('Sorry, I could not connect to the chatbot service. Please try again later or contact stefan.daniel@unibe.ch.', false);
+  }
+
+  input.disabled = false;
+  sendBtn.disabled = false;
+  input.focus();
+}
+
+// Smooth scroll for nav links
+document.querySelectorAll('nav a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.getElementById('navLinks').classList.remove('open');
+  });
+});
+</script>
+
+</body>
+</html>
